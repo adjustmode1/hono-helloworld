@@ -1,0 +1,24 @@
+{
+  "name": "@packages/cloudevents",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "rimraf dist && tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.5.4",
+    "rimraf": "^6.0.1"
+  },
+  "peerDependencies": {
+    "cloudevents": "^6.0.2",
+    "firebase-admin": "^11.2.0"
+  },
+  "dependencies": {
+    "ulid": "^2.3.0"
+  }
+}
