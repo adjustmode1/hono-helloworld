@@ -1,8 +1,10 @@
-import type { MiddlewareHandler, Context, ValidationTargets } from 'hono';
-import Ajv from 'ajv';
 import type { ErrorObject } from 'ajv';
+import Ajv from 'ajv';
+import type { Context, MiddlewareHandler, ValidationTargets } from 'hono';
 import { uniqueSymbol } from 'hono-openapi';
 import { OpenAPIV3 } from 'openapi-types';
+
+import { getAjvSchema } from '../decorator';
 
 const ajv = new Ajv();
 

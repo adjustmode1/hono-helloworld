@@ -10,6 +10,8 @@
     "esModuleInterop": true,
     "noPropertyAccessFromIndexSignature": false,
     "strict": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "plugins": [
       {
         "transform": "typia/lib/transform"

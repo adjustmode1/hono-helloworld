@@ -1,8 +1,9 @@
 import { getLogger } from '@packages/common';
 import { Context, Hono } from 'hono';
 
+import { getAjvSchema } from '../../decorator';
+import { GetHelloDto, PostHelloDto, PostHelloSchema } from '../../dtos';
 import { ROUTES } from '../../route';
-import { PostHelloDto, PostHelloSchema, GetHelloSchema } from '../../dtos';
 import { ajvValidator } from '../../utils/ajv.validator';
 
 const logger = getLogger('HelloController');
@@ -11,7 +12,7 @@ const HelloController = new Hono();
 
 HelloController.get(
   ROUTES.Hello.GetHello,
-  ajvValidator('query', GetHelloSchema),
+  ajvValidator('query', getAjvSchema(GetHelloDto)),
   async (c: Context) => {
     logger.info(ROUTES.Hello.GetHello);
 
