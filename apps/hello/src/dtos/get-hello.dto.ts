@@ -1,7 +1,5 @@
-import Ajv, { ErrorObject, JSONSchemaType } from 'ajv';
-import { createMiddleware } from 'hono/factory';
+import { JSONSchemaType } from 'ajv';
 
-const ajv = new Ajv();
 export interface GetHelloDtoInterface {
   messageId: string;
 }

@@ -4,9 +4,6 @@ import { Context, Hono } from 'hono';
 import { ROUTES } from '../../route';
 import { PostHelloDto, PostHelloSchema, GetHelloSchema } from '../../dtos';
 import { ajvValidator } from '../../utils/ajv.validator';
-import { describeRoute } from 'hono-openapi';
-import { OpenAPIV3_1 } from 'openapi-types';
-import ReferenceObject = OpenAPIV3_1.ReferenceObject;
 
 const logger = getLogger('HelloController');
 
