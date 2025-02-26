@@ -1,35 +1,42 @@
 import { getLogger } from '@packages/common';
 import { Context, Hono } from 'hono';
 
-import { GetHelloDto } from '../../dtos/get-hello.dto';
 import { ROUTES } from '../../route';
+import { PostHelloDto, PostHelloSchema, GetHelloSchema } from '../../dtos';
+import { ajvValidator } from '../../utils/ajv.validator';
+import { describeRoute } from 'hono-openapi';
+import { OpenAPIV3_1 } from 'openapi-types';
+import ReferenceObject = OpenAPIV3_1.ReferenceObject;
 
 const logger = getLogger('HelloController');
 
 const HelloController = new Hono();
 
-HelloController.get(ROUTES.Hello.GetHello, GetHelloDto, async (c: Context) => {
+HelloController.get(
+  ROUTES.Hello.GetHello,
+  ajvValidator('query', GetHelloSchema),
+  async (c: Context) => {
+    logger.info(ROUTES.Hello.GetHello);
+
+    return c.json({ hello: 'world' });
+  },
+);
+
+HelloController.post(
+  ROUTES.Hello.PostHello,
+  ajvValidator('json', PostHelloSchema),
+  PostHelloDto,
+  async (c: Context) => {
+    logger.info(ROUTES.Hello.PostHello);
+
+    return c.json({ hello: 'world' });
+  },
+);
+
+HelloController.put(ROUTES.Hello.GetHello, PostHelloDto, async (c: Context) => {
   logger.info(ROUTES.Hello.GetHello);
 
   return c.json({ hello: 'world' });
 });
-
-// HelloController.get(ROUTES.Hello.ListHello, async (c: Context) => {
-//   logger.info(ROUTES.Hello.ListHello);
-//
-//   return c.json({ hello: [] });
-// });
-//
-// HelloController.post(ROUTES.Hello.PostHello, async (c: Context) => {
-//   logger.info(ROUTES.Hello.PostHello);
-//
-//   return c.json({ hello: [] });
-// });
-//
-// HelloController.post(ROUTES.Hello.DeletesHello, async (c: Context) => {
-//   logger.info(ROUTES.Hello.DeletesHello);
-//
-//   return c.json({ hello: [] });
-// });
 
 export default HelloController;

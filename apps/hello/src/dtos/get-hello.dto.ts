@@ -6,29 +6,15 @@ export interface GetHelloDtoInterface {
   messageId: string;
 }
 
-const GetHelloSchema: JSONSchemaType<GetHelloDtoInterface> = {
+export const GetHelloSchema: JSONSchemaType<GetHelloDtoInterface> = {
   type: 'object',
   properties: {
     messageId: {
       type: 'string',
+      minLength: 1,
+      maxLength: 100,
     },
   },
   required: ['messageId'],
-  additionalProperties: true,
+  $id: 'GetHelloSchema',
 };
-
-const validate = ajv.compile(GetHelloSchema);
-
-export const GetHelloDto = createMiddleware(async (c, next) => {
-  const request = await c.req.query();
-
-  validate(request);
-
-  const errors: ErrorObject[] | null | undefined = validate.errors;
-
-  if (errors) {
-    return c.json(errors, 400);
-  }
-
-  await next();
-});
