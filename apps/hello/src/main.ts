@@ -7,6 +7,7 @@ import { PACKAGE, SERVICE_PORT, VERSION } from './constraint';
 import HelloController from './modules/hello/hello.controller';
 import { ROUTES } from './route';
 import { openAPISpecs } from 'hono-openapi';
+import { swaggerUI } from '@hono/swagger-ui'
 import { OpenAPIV3_1 } from 'openapi-types';
 import ReferenceObject = OpenAPIV3_1.ReferenceObject;
 import * as SchemaDto from './dtos';
@@ -62,14 +63,10 @@ app.get(
   }),
 );
 
-//
-// app.get(
-//   '/docs',
-//   apiReference({
-//     theme: 'saturn',
-//     spec: { url: '/openapi' },
-//   })
-// )
+
+const middleware = swaggerUI({ url: '/openapi' });
+
+app.get('/ui', middleware);
 
 (() => {
   serve({

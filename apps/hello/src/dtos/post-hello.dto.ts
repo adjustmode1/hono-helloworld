@@ -39,7 +39,6 @@ export class PostHelloDto {
   })
   messageOption2!: string;
 
-
   @AjvField({
     type: 'integer',
     enum: MessageEnums,
