@@ -6,7 +6,6 @@ export class GetHelloDto {
     minLength: 1,
     maxLength: 100,
     required: ['messageId'],
-    $id: 'GetHelloSchema',
   })
   messageId!: string;
 }
