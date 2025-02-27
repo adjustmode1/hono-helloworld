@@ -6,7 +6,10 @@ import { OpenAPIV3 } from 'openapi-types';
 
 import { getAjvSchema } from '../decorator';
 
-const ajv = new Ajv();
+const ajv = new Ajv({
+  strict: false,
+  allowUnionTypes: true,
+});
 
 type AjvResult =
   | { success: true; data: unknown }
@@ -80,7 +83,10 @@ export function ajvValidator(
 export async function generateAjvValidatorDocs<
   Target extends keyof ValidationTargets,
 >(target: Target, schema: object) {
-  const docs: Partial<OpenAPIV3.OperationObject> = {};
+  const docs: Partial<OpenAPIV3.OperationObject> = schema;
+
+  docs.parameters = [];
+  docs.requestBody = undefined;
 
   // Nếu target là "json" hoặc "form", sử dụng requestBody
   if (target === 'form' || target === 'json') {
@@ -89,14 +95,14 @@ export async function generateAjvValidatorDocs<
       docs.requestBody = {
         content: {
           [target === 'json' ? 'application/json' : 'multipart/form-data']: {
-            schema: { $ref: `#/components/schemas/${id}Response` },
+            schema: { $ref: `#/components/schemas/${id}` },
           },
         },
       };
 
       docs.responses = {
         200: {
-          $ref: `#/components/schemas/${id}Response`,
+          $ref: `#/components/schemas/${id.replace('Dto','')}Response`,
         },
       } as OpenAPIV3.ResponsesObject;
     }

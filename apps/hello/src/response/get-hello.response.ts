@@ -1,16 +1,11 @@
-import { JSONSchemaType } from 'ajv';
+import {AjvField, AjvSchemaObject} from "../decorator";
 
-export interface GetHelloResponseInterface {
-  hello: string;
+@AjvSchemaObject({
+  required: ['hello']
+})
+export class GetHelloResponse {
+  @AjvField({
+    type: 'string',
+  })
+  hello!: string;
 }
-
-export const GetHelloSchemaResponse: JSONSchemaType<GetHelloResponseInterface> =
-  {
-    type: 'object',
-    properties: {
-      hello: {
-        type: 'string',
-      },
-    },
-    required: ['hello'],
-  };

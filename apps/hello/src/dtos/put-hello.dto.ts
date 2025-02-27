@@ -1,6 +1,6 @@
 import { AjvField } from '../decorator';
 
-export class GetHelloDto {
+export class PutHelloDto {
   @AjvField({
     type: 'string',
     minLength: 1,

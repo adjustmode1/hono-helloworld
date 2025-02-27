@@ -5,5 +5,6 @@ export const ROUTES = {
     ListHello: 'ListHello',
     PostHello: 'PostHello',
     DeletesHello: 'DeletesHello',
+    PutHello: 'PutHello'
   },
 };

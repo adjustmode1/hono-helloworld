@@ -11,6 +11,7 @@ import { OpenAPIV3_1 } from 'openapi-types';
 import ReferenceObject = OpenAPIV3_1.ReferenceObject;
 import * as SchemaDto from './dtos';
 import * as SchemaResponse from './response';
+import {getAjvSchema} from "./decorator";
 
 const logger = getLogger('Server');
 
@@ -26,7 +27,7 @@ const SchemasDto: Record<string, ReferenceObject> = Object.keys(
   SchemaDto,
 ).reduce(
   (acc, key) => {
-    acc[key] = SchemaDto[key] as ReferenceObject;
+    acc[key] = getAjvSchema(SchemaDto[key]) as unknown as ReferenceObject;
     return acc;
   },
   {} as Record<string, ReferenceObject>,
@@ -36,7 +37,7 @@ const SchemasResponse: Record<string, ReferenceObject> = Object.keys(
   SchemaResponse,
 ).reduce(
   (acc, key) => {
-    acc[key] = SchemaResponse[key] as ReferenceObject;
+    acc[key] = getAjvSchema(SchemaResponse[key]) as unknown as ReferenceObject;
     return acc;
   },
   {} as Record<string, ReferenceObject>,

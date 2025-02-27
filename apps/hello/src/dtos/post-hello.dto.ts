@@ -1,49 +1,48 @@
-import Ajv, { ErrorObject, JSONSchemaType } from 'ajv';
-import { createMiddleware } from 'hono/factory';
+import {AjvField, AjvSchemaObject} from '../decorator';
 
-export interface PostHelloInterface {
-  message: string;
-  messageOption1: string;
-  messageOption2: string;
+
+enum MessageEnums {
+  messageEnum1 = 0,
+  messageEnum2 = 1,
+  messageEnum3 = 2,
+  messageEnumOptional = 99
 }
 
-const ajv = new Ajv();
+@AjvSchemaObject({
+  oneOf: [
+    { required: ["messageOption1"], not: { required: ['messageOption2']} },
+    { required: ["messageOption2"], not: { required: ['messageOption1']} },
+  ],
+  required: ['message']
+})
+export class PostHelloDto {
+  @AjvField({
+    type: 'string',
+    minLength: 1,
+    maxLength: 100,
+  })
+  message!: string;
 
-export const PostHelloSchema: JSONSchemaType<PostHelloInterface> = {
-  type: 'object',
-  properties: {
-    message: {
-      type: 'string',
-      minLength: 1,
-      maxLength: 100,
-    },
-    messageOption1: {
-      type: 'string',
-      minLength: 1,
-      maxLength: 100,
-    },
-    messageOption2: {
-      type: 'string',
-      minLength: 1,
-      maxLength: 100,
-    },
-  },
-  required: ['message'],
-  $id: 'PostHelloSchema',
-};
+  @AjvField({
+    type: 'string',
+    minLength: 1,
+    maxLength: 100,
+    additionalProperties: false
+  })
+  messageOption1!: string;
 
-const validate = ajv.compile<PostHelloInterface>(PostHelloSchema);
+  @AjvField({
+    type: 'string',
+    minLength: 1,
+    maxLength: 100,
+    additionalProperties: false
+  })
+  messageOption2!: string;
 
-export const PostHelloDto = createMiddleware(async (c, next) => {
-  const request = await c.req.query();
 
-  validate(request);
-
-  const errors: ErrorObject[] | null | undefined = validate.errors;
-
-  if (errors) {
-    return c.json(errors, 400);
-  }
-
-  await next();
-});
+  @AjvField({
+    type: 'integer',
+    enum: MessageEnums,
+  })
+  messageEnums!: MessageEnums;
+}
