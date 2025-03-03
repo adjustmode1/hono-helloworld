@@ -5,6 +5,10 @@ export const ROUTES = {
     ListHello: 'ListHello',
     PostHello: 'PostHello',
     DeletesHello: 'DeletesHello',
-    PutHello: 'PutHello'
+    PutHello: 'PutHello',
+    CaseRange: 'CaseRange',
+    ArrayCase: 'ArrayCase',
+    CaseEmoji: 'CaseEmoji',
+    CaseUUID: 'CaseUUID',
   },
 };

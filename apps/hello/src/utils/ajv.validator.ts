@@ -1,19 +1,12 @@
 import type { ErrorObject } from 'ajv';
-import Ajv from 'ajv';
 import type { Context, MiddlewareHandler, ValidationTargets } from 'hono';
 import { uniqueSymbol } from 'hono-openapi';
 import { OpenAPIV3 } from 'openapi-types';
 
-import { getAjvSchema } from '../decorator';
-
-const ajv = new Ajv({
-  strict: false,
-  allowUnionTypes: true,
-});
-
 type AjvResult =
   | { success: true; data: unknown }
   | { success: false; error: ErrorObject[] };
+import { ajv } from '../decorator';
 
 type AjvHook = (
   result: AjvResult,
@@ -90,8 +83,10 @@ export async function generateAjvValidatorDocs<
 
   // Nếu target là "json" hoặc "form", sử dụng requestBody
   if (target === 'form' || target === 'json') {
-    const id = (schema as any).$id;
+    let id = (schema as any).$id;
     if (id && typeof id === 'string') {
+      id = id?.split('/').at(-1);
+
       docs.requestBody = {
         content: {
           [target === 'json' ? 'application/json' : 'multipart/form-data']: {
@@ -102,7 +97,7 @@ export async function generateAjvValidatorDocs<
 
       docs.responses = {
         200: {
-          $ref: `#/components/schemas/${id.replace('Dto','')}Response`,
+          $ref: `#/components/schemas/${id?.replace('Dto', '')}Response`,
         },
       } as OpenAPIV3.ResponsesObject;
     }
@@ -122,17 +117,19 @@ export async function generateAjvValidatorDocs<
       });
     } else {
       if ('$id' in schema) {
+        const id = (schema.$id as string).split('/').at(-1);
+
         parameters.push({
           in: target,
           name: (schema as any).$id as string, // ép kiểu $ref về string
           schema: {
-            $ref: `#/components/schemas/${schema.$id}`,
+            $ref: `#/components/schemas/${id}`,
           },
         });
 
         docs.responses = {
           200: {
-            $ref: `#/components/schemas/${schema.$id}Response`,
+            $ref: `#/components/schemas/${id?.replace('Dto', '')}Response`,
           },
         } as OpenAPIV3.ResponsesObject;
       }

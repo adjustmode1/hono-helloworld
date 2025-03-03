@@ -3,7 +3,7 @@ import { AjvField, AjvSchemaObject } from '../decorator';
 @AjvSchemaObject({
   required: ['hello'],
 })
-export class GetHelloResponse {
+export class CaseUuidResponse {
   @AjvField({
     type: 'string',
   })

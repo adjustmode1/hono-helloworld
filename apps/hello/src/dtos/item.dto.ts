@@ -1,11 +1,11 @@
 import { AjvField, AjvSchemaObject } from '../decorator';
 
 @AjvSchemaObject({
-  required: ['hello'],
+  required: ['itemNumber'],
 })
-export class GetHelloResponse {
+export class ItemDto {
   @AjvField({
-    type: 'string',
+    type: 'number',
   })
-  hello!: string;
+  itemNumber!: number;
 }

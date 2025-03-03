@@ -1,28 +1,20 @@
 import { serve } from '@hono/node-server';
+import { swaggerUI } from '@hono/swagger-ui';
 import { getLogger } from '@packages/common';
 import { Hono } from 'hono';
 import { logger as HonoLogger } from 'hono/logger';
+import { openAPISpecs } from 'hono-openapi';
+import { OpenAPIV3_1 } from 'openapi-types';
 
 import { PACKAGE, SERVICE_PORT, VERSION } from './constraint';
 import HelloController from './modules/hello/hello.controller';
 import { ROUTES } from './route';
-import { openAPISpecs } from 'hono-openapi';
-import { swaggerUI } from '@hono/swagger-ui'
-import { OpenAPIV3_1 } from 'openapi-types';
 import ReferenceObject = OpenAPIV3_1.ReferenceObject;
+import { getAjvSchema } from './decorator';
 import * as SchemaDto from './dtos';
 import * as SchemaResponse from './response';
-import {getAjvSchema} from "./decorator";
 
 const logger = getLogger('Server');
-
-const app = new Hono();
-
-app.use('*', HonoLogger());
-
-(async () => {})();
-
-app.route(ROUTES.Hello.controller, HelloController);
 
 const SchemasDto: Record<string, ReferenceObject> = Object.keys(
   SchemaDto,
@@ -44,6 +36,11 @@ const SchemasResponse: Record<string, ReferenceObject> = Object.keys(
   {} as Record<string, ReferenceObject>,
 );
 
+const app = new Hono();
+
+app.use('*', HonoLogger());
+const middleware = swaggerUI({ url: '/openapi' });
+
 app.get(
   '/openapi',
   openAPISpecs(app, {
@@ -63,10 +60,9 @@ app.get(
   }),
 );
 
-
-const middleware = swaggerUI({ url: '/openapi' });
-
 app.get('/ui', middleware);
+
+app.route(ROUTES.Hello.controller, HelloController);
 
 (() => {
   serve({

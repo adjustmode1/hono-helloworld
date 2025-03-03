@@ -1,19 +1,18 @@
-import {AjvField, AjvSchemaObject} from '../decorator';
-
+import { AjvField, AjvSchemaObject } from '../decorator';
 
 enum MessageEnums {
   messageEnum1 = 0,
   messageEnum2 = 1,
   messageEnum3 = 2,
-  messageEnumOptional = 99
+  messageEnumOptional = 99,
 }
 
 @AjvSchemaObject({
   oneOf: [
-    { required: ["messageOption1"], not: { required: ['messageOption2']} },
-    { required: ["messageOption2"], not: { required: ['messageOption1']} },
+    { required: ['messageOption1'], not: { required: ['messageOption2'] } },
+    { required: ['messageOption2'], not: { required: ['messageOption1'] } },
   ],
-  required: ['message']
+  required: ['message'],
 })
 export class PostHelloDto {
   @AjvField({
@@ -27,7 +26,6 @@ export class PostHelloDto {
     type: 'string',
     minLength: 1,
     maxLength: 100,
-    additionalProperties: false
   })
   messageOption1!: string;
 
@@ -35,12 +33,11 @@ export class PostHelloDto {
     type: 'string',
     minLength: 1,
     maxLength: 100,
-    additionalProperties: false
   })
   messageOption2!: string;
 
   @AjvField({
-    type: 'integer',
+    type: ['number', 'string'],
     enum: MessageEnums,
   })
   messageEnums!: MessageEnums;

@@ -1,7 +1,7 @@
-import {AjvField, AjvSchemaObject} from "../decorator";
+import { AjvField, AjvSchemaObject } from '../decorator';
 
 @AjvSchemaObject({
-  required: ['hello']
+  required: ['hello'],
 })
 export class PostHelloResponse {
   @AjvField({

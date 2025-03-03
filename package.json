@@ -7,7 +7,7 @@
     "common": "pnpm --filter @packages/common",
     "app": "pnpm run --filter @halomeapis/hello",
     "packages:build": "pnpm run common build",
-    "start:dev": "pnpm app & pnpm run app build-type & pnpm run app dev"
+    "start:dev": "pnpm app & pnpm run app dev"
   },
   "keywords": [],
   "author": "",
