@@ -66,7 +66,6 @@ export function AjvFieldType(schema: any) {
       Reflect.getMetadata(AJV_SCHEMA_KEY, schema.prototype) || {};
 
     if (existingSchema) {
-      console.log(existingSchema);
       ajv.addSchema(existingSchema);
     }
   };
